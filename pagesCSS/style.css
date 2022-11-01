@@ -1,0 +1,48 @@
+/* Variable css */
+:root{
+    --primary : #d84e0f;
+    --white : #fff;
+    --blue : #2A7282;
+}
+/* backgound des pages */
+body{
+    
+    background-image: url("../images/background.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+}
+
+/* formulaire de connection */
+.container{
+    
+    background-color: var(--white);
+    margin-top: 10%;
+}
+/* entête formulaire */
+.container > .cardHeaderCSS{
+    background-color: var(--blue) ;
+}
+.cardBodyCSS > form > div >span{
+    background-color: var(--blue);
+    color: var(--white);
+}
+.cardBodyCSS > form > div >.btnSubmitCSS{
+    background-color: var(--blue);
+    color: var(--white);
+}
+.container > .cardFooterCSS > a{
+    color: var(--primary);
+}
+
+.lien{
+    text-decoration: none;
+}
+.container > .row > .imgProfil{
+    width: 15%;
+    border-radius: 40%;
+}
