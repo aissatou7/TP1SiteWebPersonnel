@@ -1,5 +1,7 @@
 <?php
 include('connect.php');
+include('traitement/selectionUserActive.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +24,33 @@ include('connect.php');
 
 <body>
   <div class="containerTable bg-light mt-5">
+    <!-- entête contenant la photo, un message et bouton de déconnexion -->
+    <div class="row ">
+      <div class="col-2">
+
+        <!-- entête contenant la photo / Modal change role  -->
+        <!-- Ici la photo de profil est inserrer dans un bouton Modal. Les 3 dernières propriétés permettent l'affichage d'un message (Votre profil) au survole   -->
+        <button type="button" class="btn ms-4" data-bs-toggle="modal" data-bs-target="#modalProfil" data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Votre profil">
+          <!-- Recupèration de la photo à la base de données -->
+          <?php
+          $state = $bdd->prepare("SELECT * FROM image");
+          $state->execute();
+          $rows = $state->fetch();
+          ?>
+          <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rows['photo']); ?>" class="rounded-circle border p-1 bg-secondary   " height="100" width="100" />
+
+        </button>
+        
+        <span class="ms-5"> <?php echo $matricule; ?></span>
+      </div>
+      <!-- Ici nous gére la déconnexion de la session avec un messae au survole-->
+      <div class="col-9 ">
+          <button class="btn w-25" style="margin: 5% 80%; " data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Déconnexion"><a href="pageDéconnexion.php" class="lien"><i class="fa-solid fa-right-from-bracket fa-2x" ></i></a></button>
+        </div>
+
+
+
+    </div>
     <button class="btn  mt-5"><a href="pageDesActives.php" class="lien">Retour</a></button>
 
     <table class="table bg-light mt-2">

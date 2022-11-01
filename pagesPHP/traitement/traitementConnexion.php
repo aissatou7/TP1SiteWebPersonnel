@@ -17,16 +17,24 @@ if (isset($_POST['valider'])) {
 
         $roleUser = $rowV['roleUser'];
         $nom = $rowV['nom'];
+        $prenom = $rowV['prenom'];
         $passwords = $rowV['passwords'];
         $etatArchivage = $rowV['etatArchivage'];
+        $matricule = $rowV['matricule'];
+        
         // Conection d'un utilisateur ou administrateur non archivé
         if ($etatArchivage == 1) {
             $erreur[] = "Une erreur c'est produit lors de votre tentative de connexion.<br> Veuillez contacter l'administrateur à l'email : yayefallsaliou@gmail.com"  ;
         }elseif ($passwords == $passwordSaisie) {
             if ($roleUser == 'Administrateur') {
-                $_SESSION['Administrateur_nom'] = $nom;
+                $_SESSION['Administrateur_matricule'] = $matricule;
+                
+                
                 header('location:pageDesActives.php');
             } elseif ($roleUser == 'Utilisateur')  {
+                $_SESSION['Utilisateur_prenom'] = $prenom;
+                // var_dump($_SESSION['Utilisateur_prenom']);die;
+                $_SESSION['Utilisateur_matricule'] = $matricule;
                 $_SESSION['Utilisateur_nom'] = $nom;
                 header('location:pageDesActivesUtilisateur.php');
             }
