@@ -1,60 +1,9 @@
 <?php
 include('connect.php');
+include('traitement/controleSaisieInscription.php');
+include('traitement/traitementInscription.php');
+ ?>
 
-
-if (isset($_POST['valider'])) {
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $email = $_POST['email'];
-    $roleUser = $_POST['roleUser'];
-    $passwords = $_POST['passwords'];
-    $Cpasswords = $_POST['Cpasswords'];
-
-    // Recuperation images
-    if ($_FILES["image"]["error"]===4) {
-        echo
-        " <script> alert('Veuillez saisir l'image')</script>";
-    }else{
-        $fileName = $_FILES["image"]["name"];
-        $fileSize = $_FILES["image"]["size"];
-        $tmpName = $_FILES["image"]["tmp_name"];
-        
-        $validImageExtension = ['jpg','jpeg', 'png'];
-        $imageExtension = explode('.', $fileName);
-        $imageExtension = strtolower(end($imageExtension));
-        if (!in_array($imageExtension, $validImageExtension)) {
-            echo
-        " <script> alert(L'extension est invalide')</script>";
-        }elseif($fileSize > 1000000){
-            echo
-        " <script> alert(La taille de l'image est trop grande')</script>";
-        }else {
-            $newImageName = uniqid();
-            $newImageName .= '.' . $imageExtension;
-
-            move_uploaded_file($tmpName, 'img/'. $newImageName);
-
-            $stmt = $bdd->prepare("SELECT * FROM user WHERE email='$email' ");
-            $stmt->execute();
-            $row = $stmt->fetchColumn(PDO::FETCH_ASSOC);
-        
-        
-            if ($row > 0) {
-                $erreur[] = 'Le compte existe déjà';
-            } elseif ($passwords != $Cpasswords) {
-                $erreur[] = 'Les mots de passe saisi ne sont pas conforme';
-            } else {
-                $stmt = $bdd->prepare("INSERT INTO user (nom,prenom,email,matricule,roleUser,passwords,etat, dateInscrition, dateSuppression, dateArchivage, etatArchivage, image) VALUES('$nom','$prenom','$email','asdf','$roleUser','$passwords',12,'2022-10-26','2022-10-26','2022-10-26',1,'$fileName')");
-                $stmt->execute();
-                header('location:pageConnexion.php');
-            }
-        
-        }
-        
-    }
-
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,24 +35,61 @@ if (isset($_POST['valider'])) {
             <form action="" method="post" novalidate enctype="multipart/form-data">
                 <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
                 <!-- Affichage des messages d'erreurs -->
-        
+             
                 <br>
                 <label for="nom">Nom</label><br>
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 ">
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
                     <input type="text" class="form-control" placeholder="Entrez votre nom" autocomplete="off" name="nom" aria-label="Username" aria-describedby="basic-addon1">
-                   
-                </div>
+                     
+                    </div>
+                    <!-- Affichage des messages d'erreurs avec controle js-->
+                    <small> Erreur message</small>
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i>  <br>
+                     <!-- Affichage des messages d'erreurs avec controle PHP-->
+                <?php
+                if (isset($erreurNom)) {
+                    foreach ($erreurNom as $erreurNom) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurNom . '</div>';
+                    }
+                }
+                ?>
                 <label for="prenom">Prenom</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
                     <input type="text" class="form-control" placeholder="Entrez votre prenom" autocomplete="off" name="prenom" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
+                    </div>
+                    <!-- Affichage des messages d'erreurs avec controle js-->
+                    <small> Erreur message</small>
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i> <br>
+                     <!-- Affichage des messages d'erreurs avec controle PHP-->
+
+                 <?php
+                if (isset($erreurPrenom)) {
+                    foreach ($erreurPrenom as $erreurPrenom) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurPrenom . '</div>';
+                    }
+                }
+                ?>
                 <label for="email">Email</label><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
                     <input type="email" class="form-control" placeholder="Entrez votre Email" autocomplete="off" name="email" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
+                    <!-- Affichage des messages d'erreurs avec controle js-->
+                    <small> Erreur message</small>
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i> <br>
+                     <!-- Affichage des messages d'erreurs avec controle PHP-->
+                 <?php
+                if (isset($erreurEmail)) {
+                    foreach ($erreurEmail as $erreurEmail) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurEmail . '</div>';
+                    }
+                }
+                ?>
                 <label for="role">Role</label><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
@@ -112,23 +98,65 @@ if (isset($_POST['valider'])) {
                         <option value="Administrateur">Administrateur</option>
                         <option value="Utilisateur">Utilisateur</option>
                     </select>
-                </div>
+                    </div>
+                    <!-- Affichage des messages d'erreurs avec controle js-->
+                    <small> Erreur message</small>
+                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-exclamation-circle"></i> <br>
+
+                     <!-- Affichage des messages d'erreurs avec controle PHP-->
+
+                 <?php
+                if (isset($erreurRole)) {
+                    foreach ($erreurRole as $erreurRole) {
+                        echo '<div class="erreurMsg" style="color:red;" > ' . $erreurRole . '</div>';
+                    }
+                }
+                ?>
                 <label for="password">Mot de passe</label><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
                     <input type="password" class="form-control" placeholder="Entrez votre mot de passe" autocomplete="off" name="passwords" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
+                <!-- Affichage des messages d'erreurs avec controle js-->
+                <small> Erreur message</small>
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i> <br>
+
+                 <!-- Affichage des messages d'erreurs -->
+                 <?php
+                if (isset($erreurPassword)) {
+                    foreach ($erreurPassword as $erreurPassword) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurPassword . '</div>';
+                    }
+                }
+                ?>
                 <label for="password">Confirmez votre de passe</label><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
                     <input type="password" class="form-control" placeholder="Confirmez votre mot de passe" autocomplete="off" name="Cpasswords" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
+                <!-- Affichage des messages d'erreurs avec controle js-->
+                <small> Erreur message</small>
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-exclamation-circle"></i> <br>
+
+                 <!-- Affichage des messages d'erreurs avec controle PHP-->
+                 <?php
+                if (isset($erreurConfirmationPassword)) {
+                    foreach ($erreurConfirmationPassword as $erreurConfirmationPassword) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurConfirmationPassword . '</div>';
+                    }
+                }
+                ?>
+               
 
                 <label for="userPhoto" class="custom-file-label">Photo </label><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
                     <input type="file"  name="image" id="image" value="">
                 </div>
+              
                 <div class="form-group">
                     <input type="submit" name="valider" value="Envoyer" accept=".jpg, .png, .jpeg" class="btnSubmitCSS">
 

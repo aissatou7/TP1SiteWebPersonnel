@@ -21,7 +21,7 @@ if (isset($_POST['valider'])) {
         $etatArchivage = $rowV['etatArchivage'];
         // Conection d'un utilisateur ou administrateur non archivé
         if ($etatArchivage == 1) {
-            $erreur[] = "Erreur : connexion impossible, veuillez contacter l'administrateur à l'email : yayefallsaliou@gmail.com"  ;
+            $erreur[] = "Une erreur c'est produit lors de votre tentative de connexion.<br> Veuillez contacter l'administrateur à l'email : yayefallsaliou@gmail.com"  ;
         }elseif ($passwords == $passwordSaisie) {
             if ($roleUser == 'Administrateur') {
                 $_SESSION['Administrateur_nom'] = $nom;

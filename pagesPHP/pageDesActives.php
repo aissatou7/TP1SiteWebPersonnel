@@ -24,7 +24,7 @@ include('connect.php');
 <body>
   <div class="container bg-light mt-5">
     <!-- entête contenant la photo, un message et bouton de déconnexion -->
-    <div class="row">
+    <div class="row ">
       <div class="col-2">
 
         <!-- entête contenant la photo / Modal change role  -->
@@ -41,9 +41,9 @@ include('connect.php');
         </button>
         <span> MAF0001</span>
       </div>
-      <!-- Ici je gére la déconnexion de la session -->
+      <!-- Ici nous gére la déconnexion de la session avec un messae au survole-->
       <div class="col-9 ">
-          <button class="btn " style="margin: 5% 80%"><a href="pageDéconnexion.php" class="lien">Déconnexion</a></button>
+          <button class="btn w-25" style="margin: 5% 80%; " data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Déconnexion"><a href="pageDéconnexion.php" class="lien"><i class="fa-solid fa-right-from-bracket fa-2x" ></i></a></button>
         </div>
 
 
@@ -94,6 +94,7 @@ include('connect.php');
           $role = $row['roleUser'];
           $matricule = $row['matricule'];
           $id = $row['id'];
+          
           echo '<tr>
           
         <td >' . $nom . '</td>

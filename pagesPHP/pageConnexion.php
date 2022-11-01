@@ -29,13 +29,13 @@
         <div class="card-body cardBodyCSS">
             <form action="" method="post">
                 <!-- Affichage des messages d'erreurs -->
-                <?php
+                 <?php
                 if (isset($erreur)) {
                     foreach ($erreur as $erreur) {
-                        echo '<div class="erreurMsg" > ' . $erreur . '</div>';
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreur . '</div>';
                     }
                 }
-                ?> <br>
+                ?><br>
                 <label for="email"> Email</label><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
