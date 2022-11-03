@@ -25,15 +25,16 @@ if (isset($_POST['valider'])) {
         // Conection d'un utilisateur ou administrateur non archivé
         if ($etatArchivage == 1) {
             $erreur[] = "Une erreur c'est produit lors de votre tentative de connexion.<br> Veuillez contacter l'administrateur à l'email : yayefallsaliou@gmail.com"  ;
-        }elseif ($passwords == $passwordSaisie) {
+        }elseif (password_verify($passwordSaisie,$passwords)) {
             if ($roleUser == 'Administrateur') {
+                $_SESSION['Administrateur_email'] = $email;
+                $_SESSION['Administrateur_prenom'] = $prenom;
                 $_SESSION['Administrateur_matricule'] = $matricule;
-                
-                
+                $_SESSION['Administrateur_nom'] = $nom;
                 header('location:pageDesActives.php');
             } elseif ($roleUser == 'Utilisateur')  {
+                $_SESSION['Utilisateur_email'] = $email;
                 $_SESSION['Utilisateur_prenom'] = $prenom;
-                // var_dump($_SESSION['Utilisateur_prenom']);die;
                 $_SESSION['Utilisateur_matricule'] = $matricule;
                 $_SESSION['Utilisateur_nom'] = $nom;
                 header('location:pageDesActivesUtilisateur.php');

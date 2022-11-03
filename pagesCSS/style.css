@@ -14,6 +14,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: smaller;
     
     
 }
@@ -46,4 +47,8 @@ body{
 .container > .row > .imgProfil{
     width: 15%;
     border-radius: 40%;
+}
+
+table{
+    width: 80%;
 }

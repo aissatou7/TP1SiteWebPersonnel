@@ -1,7 +1,8 @@
 <?php
-include('../connect.php');
-if (isset($_GET['roleid'])) {
+include "../connect.php";
+
     $id=$_GET['roleid'];
+    $recherche=$_GET['recherche'];
     // $datearchiver=date('y-m-d h:i:s');
     $requêterole=$bdd->prepare("SELECT roleUser FROM user WHERE id='$id'");
     $requêterole->execute();
@@ -13,16 +14,21 @@ if (isset($_GET['roleid'])) {
             $req=$bdd->prepare("UPDATE user SET roleUser='Utilisateur' WHERE id='$id'");//code pour archiver en changeant la valeur 0 par 1
             $req->execute();
             if($req){
-            header('location:../pageDesActives.php');
+                if ($recherche=='oui') {
+                     header('location:../pageDesActives.php');
+                }
+            
             }
             break;
         case 'Utilisateur':
             $req=$bdd->prepare("UPDATE user SET roleUser='Administrateur' WHERE id='$id'");//code pour archiver en changeant la valeur 0 par 1
             $req->execute();
             if($req){
-            header('location:../pageDesActives.php');
+                if ($recherche=='oui') {
+                    header('location:../pageDesActives.php');
+               }
             }
             break;
     }
-}
+
 ?>

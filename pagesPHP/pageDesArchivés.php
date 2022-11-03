@@ -1,6 +1,7 @@
 <?php
 include('connect.php');
-include('traitement/selectionUserActive.php');
+include('traitement/traitementConnexion.php');
+
 
 ?>
 
@@ -23,35 +24,68 @@ include('traitement/selectionUserActive.php');
 </head>
 
 <body>
-  <div class="containerTable bg-light mt-5">
-    <!-- entête contenant la photo, un message et bouton de déconnexion -->
-    <div class="row ">
+  <div class="container bg-light mt-5">
+   <!-- entête contenant la photo, un message et bouton de déconnexion -->
+   <div class="row ">
       <div class="col-2">
 
         <!-- entête contenant la photo / Modal change role  -->
         <!-- Ici la photo de profil est inserrer dans un bouton Modal. Les 3 dernières propriétés permettent l'affichage d'un message (Votre profil) au survole   -->
-        <button type="button" class="btn ms-4" data-bs-toggle="modal" data-bs-target="#modalProfil" data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Votre profil">
+        <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#modalProfil" data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Votre profil">
           <!-- Recupèration de la photo à la base de données -->
           <?php
           $state = $bdd->prepare("SELECT * FROM image");
           $state->execute();
-          $rows = $state->fetch();
+          $rows = $state->fetch(PDO::FETCH_ASSOC);
           ?>
+          <!-- ici nous avons l'image du profil -->
           <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rows['photo']); ?>" class="rounded-circle border p-1 bg-secondary   " height="100" width="100" />
-
+          <!-- Ici nous avons le matricule de la personne connectée -->
+          <h4><?php echo$_SESSION['Administrateur_matricule'] ?></h4>
         </button>
-        
-        <span class="ms-5"> <?php echo $matricule; ?></span>
       </div>
+
+
+
+      <!-- Message de bienvenue -->
+      <div class="col-7  d-flex justify-content-center align-items-center">
+      <h1 style="color: #2A7282;"> Bienvenue <?php echo$_SESSION['Administrateur_prenom'].' '.$_SESSION['Administrateur_nom'] ?></h1>
+      </div>
+      
+
+
+
+      
       <!-- Ici nous gére la déconnexion de la session avec un messae au survole-->
-      <div class="col-9 ">
-          <button class="btn w-25" style="margin: 5% 80%; " data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Déconnexion"><a href="pageDéconnexion.php" class="lien"><i class="fa-solid fa-right-from-bracket fa-2x" ></i></a></button>
-        </div>
+      <div class="col-3 d-flex justify-content-center align-items-center">
+          <button class="btn w-25" data-bs-toggle="modal" data-bs-target="#modalDéconnexion" data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Déconnexion"><i class="fa-solid fa-right-from-bracket fa-2x" style="color: #2A7282;" ></i></button>
+      </div>
 
-
+      <p class="align-items-center justify-content-center">-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</p>
 
     </div>
-    <button class="btn  mt-5"><a href="pageDesActives.php" class="lien">Retour</a></button>
+    <!-- Ici nous avons les liens sur la page inscription et la liste des archivés -->
+    <div class="row mt-4">
+      <div class="row  d-flex align-items-center ">
+       
+
+
+        <div class="col-5">
+          <button class="btn "><a href="pageDesActives.php" class="lien"  style="color: #2A7282;">Retour</a></button>
+        </div>
+
+        <!-- Ici nous avons la barre de recherche -->
+        <div class="col-5  ">
+          
+            <form action="" method="POST" class="d-flex">
+              <input type="search" name="recherche" class="form-control" placeholder="Rechercher un membre ..." autocomplete="off" aria-label="Username" aria-describedby="basic-addon1">
+              <button type="submit" class="input-group-text" id="basic-addon1"style="background-color: #2A7282;"><i class="fa-sharp fa-solid fa-key"style="color: white; size:2%" ></i></button>
+            </form>
+         
+        </div>
+      </div>
+
+    </div>
 
     <table class="table bg-light mt-2">
       <thead>
@@ -88,29 +122,9 @@ include('traitement/selectionUserActive.php');
         <td>
         
         <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#modalDéarchivage">
-        <span class="material-symbols-outlined" style="color:black;">restore_from_trash</span>
+        <a class="lien text-light" href="traitement/traitementDéarchivage.php?deleteid=' . $id . '" ><span class="material-symbols-outlined" style="color:black;">restore_from_trash</span></a>
         </button>
-       
-        <!-- Modal change role -->
-
-        <div class="modal fade" id="modalDéarchivage" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Déarchivage</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-              Voulez-vous vraiment déarchiver ce membre ?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">NON</button>
-                <button type="button" class="btn btn-danger"><a class="lien text-light" href="traitement/traitementDéarchivage.php?deleteid=' . $id . '" >OUI</a></button>
-              </div>
-            </div>
-          </div>
-        </div>
-          </div>
+          
         </td>
     
       </tr>';
