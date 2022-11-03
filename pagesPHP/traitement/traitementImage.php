@@ -2,12 +2,14 @@
 
 <?php
 session_start();
+include "../connect.php";
+// var_dump($_FILES);die;
 if (isset($_POST['valider'])){
 /*   var_dump($_FILES);die;
 */
 //ici on verifie si la session de l'utilisateur qui s'est connecté existe
 if (isset($_SESSION['id'])) {
-$id = $_SESSION['id'];
+    $id = $_SESSION['id'];
 }
 if(!empty($_FILES["image"]["name"])) { 
 // Get file info 
@@ -24,7 +26,7 @@ if(in_array($fileType, $allowTypes)){
     // $db = new PDO('mysql:host=localhost;dbname=test;charset=UTF8', 'root', '');
     $getImage = $bdd->query("SELECT photo FROM image WHERE user=$id"); 
     if ($getImage) {
-        $bdd->query("DELETE FROM images WHERE user=$id");
+        $bdd->query("DELETE FROM image WHERE user=$id");
     }
     $insert = $bdd->query("INSERT into image (photo,user) VALUES ('$imgContent',$id)"); 
 
@@ -32,7 +34,7 @@ if(in_array($fileType, $allowTypes)){
     if($insert){ 
         $status = 'success'; 
         $statusMsg = "File uploaded successfully."; 
-        // header('location:editProfile.php');
+        header('location:../pageDesActives.php');
     }else{ 
         $statusMsg = "File upload failed, please try again."; 
     }

@@ -1,7 +1,9 @@
 <?php
 include('connect.php');
 include('traitement/traitementConnexion.php');
-
+if ($_SESSION['id']) {
+  $idSession = $_SESSION['id'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +19,7 @@ include('traitement/traitementConnexion.php');
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <!-- link font awesone -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+  <script src="https://code.jquery.com/jquery-3.5.0.min.js%22%3E"></script>
   <title>Page Administrateur</title>
 </head>
 
@@ -32,8 +34,8 @@ include('traitement/traitementConnexion.php');
         <button type="button" class="btn " data-bs-toggle="modal" data-bs-target="#modalProfil" data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Votre profil">
           <!-- Recupèration de la photo à la base de données -->
           <?php
-          $state = $bdd->prepare("SELECT * FROM image");
-          $state->execute();
+          $state = $bdd->prepare("SELECT photo FROM image WHERE user=:user");
+          $state->execute(['user'=> $idSession]);
           $rows = $state->fetch(PDO::FETCH_ASSOC);
           ?>
           <!-- ici nous avons l'image du profil -->
@@ -68,27 +70,25 @@ include('traitement/traitementConnexion.php');
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
                 <!-- Ce bouton permet de retourner au premier modal -->
-              <div class="form-group">
-                  <button class="btn btn-primary" data-bs-target="#modalProfil" data-bs-toggle="modal" data-bs-dismiss="modal" >retour</button>
-                  </div>
-                <form action="traitement/traitementImage.php" method="post" novalidate enctype="multipart/form-data">
-                  <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
-                  <label for="userPhoto" class="custom-file-label">Photo </label><br>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
-                    <input type="file" name="image" id="image" value="">
-                  </div>
-                  
-                </form>
+              <button class="btn btn-primary" data-bs-target="#modalProfil" data-bs-toggle="modal" data-bs-dismiss="modal" >retour</button>
+                <h5 class="modal-title ms-1" id="exampleModalToggleLabel2">Modifier ici votre photo</h5>
               </div>
-              <div class="modal-footer">
-                <button type="submit" name="valider" accept=".jpg, .png, .jpeg" class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Modifier</button>
-              </div>
+                <div class="modal-body">
+              
+                    <form action="traitement/traitementImage.php" method="post"  enctype="multipart/form-data">
+                      <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
+                      <label for="userPhoto" class="custom-file-label">Photo </label><br>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
+                        <input type="file" name="image" id="image" value="">
+                      </div>
+                      
+                      <div class="modal-footer">
+                        <button type="submit" name="valider" accept=".jpg, .png, .jpeg" class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Modifier</button>
+                      </div>
+                    </form>
+                </div>
             </div>
           </div>
         </div>
@@ -98,24 +98,33 @@ include('traitement/traitementConnexion.php');
             <div class="modal-content">
               <div class="modal-header">
               <button class="btn btn-primary" data-bs-target="#modalProfil" data-bs-toggle="modal" data-bs-dismiss="modal" >retour</button>
-                <h5 class="modal-title ms-5" id="exampleModalToggleLabel2">Mot de passe</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title " id="exampleModalToggleLabel2">Modifier ici votre mot de passe</h5>
               </div>
               <div class="modal-body">
                  <!-- Ce bouton permet de retourner au premier modal -->
           
-                <form action="traitement/traitementImage.php" method="post" novalidate enctype="multipart/form-data">
+                <form action="traitement/traitementProfil.php" method="post" novalidate enctype="multipart/form-data">
                   <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
-                  <label for="userPhoto" class="custom-file-label">Photo </label><br>
-                  <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
-                    <input type="file" name="image" id="image" value="">
-                  </div>
+                    <label for="nom">Ancien mot de passe</label><br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
+                            <input type="password" class="form-control" value="<?php echo $nom ?>" autocomplete="off" name="Apassword" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                    <label for="nom">Nouveau mot de passe</label><br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
+                            <input type="password" class="form-control" value="<?php echo $nom ?>" autocomplete="off" name="Npassword" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>   
+                    <label for="nom">Confirmez votre nouveau mot de passe</label><br>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
+                            <input type="password" class="form-control" value="<?php echo $nom ?>" autocomplete="off" name="Cpassword" aria-label="Username" aria-describedby="basic-addon1">
+                        </div> 
 
                 </form>
               </div>
               <div class="modal-footer">
-                <button type="submit" name="valider" accept=".jpg, .png, .jpeg" class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Modifier</button>
+                <button type="submit" name="validerMotPass" accept=".jpg, .png, .jpeg" class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Modifier</button>
               </div>
             </div>
           </div>
@@ -333,6 +342,36 @@ include('traitement/traitementConnexion.php');
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script>
+          $(document).ready(function() {
+            
+            let id=""
+            alert("hh");
+            $(".edit").on("click", function() {
+               id = $(this).attr("data-id");
+            });
+
+            $(".confirmEdit").on("click", function() {
+                document.location = "editUser.php?id=" +id;
+            });
+
+            // $(".archive").on("click", function() {
+            //    id = $(this).attr("data-id");
+            // });
+
+            // $(".confirmArchive").on("click", function() {
+            //     document.location = "archiveUser.php?id=" +id;
+            // });
+
+            // $(".role").on("click", function() {
+            //    id = $(this).attr("data-id");
+            // });
+
+            // $(".confirmRole").on("click", function() {
+            //     document.location = "switchRole.php?id=" +id;
+            // });
+        })
+        </script>
 
 </body>
 

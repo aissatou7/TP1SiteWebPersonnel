@@ -14,7 +14,7 @@ if (isset($_POST['valider'])) {
         $stmt = $bdd->prepare("SELECT * FROM user WHERE email='$email' ");
         $stmt->execute();
         $rowV = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        $userId = $rowV['id'];
         $roleUser = $rowV['roleUser'];
         $nom = $rowV['nom'];
         $prenom = $rowV['prenom'];
@@ -27,16 +27,19 @@ if (isset($_POST['valider'])) {
             $erreur[] = "Une erreur c'est produit lors de votre tentative de connexion.<br> Veuillez contacter l'administrateur à l'email : yayefallsaliou@gmail.com"  ;
         }elseif (password_verify($passwordSaisie,$passwords)) {
             if ($roleUser == 'Administrateur') {
+                $_SESSION['id'] = $userId;
                 $_SESSION['Administrateur_email'] = $email;
                 $_SESSION['Administrateur_prenom'] = $prenom;
                 $_SESSION['Administrateur_matricule'] = $matricule;
                 $_SESSION['Administrateur_nom'] = $nom;
+                $_SESSION['Administrateur_password'] = $passwords;
                 header('location:pageDesActives.php');
             } elseif ($roleUser == 'Utilisateur')  {
                 $_SESSION['Utilisateur_email'] = $email;
                 $_SESSION['Utilisateur_prenom'] = $prenom;
                 $_SESSION['Utilisateur_matricule'] = $matricule;
                 $_SESSION['Utilisateur_nom'] = $nom;
+                $_SESSION['Utilisateur_password'] = $passwords;
                 header('location:pageDesActivesUtilisateur.php');
             }
         }elseif ($passwordSaisie=='') {
