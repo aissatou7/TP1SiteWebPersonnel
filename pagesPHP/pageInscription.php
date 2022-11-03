@@ -1,6 +1,7 @@
 <?php
 include('connect.php');
 include('traitement/traitementInscription.php');
+include('traitement/traitementImage.php');
  ?>
 
 <!DOCTYPE html>

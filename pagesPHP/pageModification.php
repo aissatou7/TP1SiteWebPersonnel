@@ -4,6 +4,7 @@ include 'connect.php';
 $id = $_GET['updateid'];
 $stmt = $bdd->prepare("SELECT nom,prenom,email FROM user WHERE id='$id'");
 $stmt->execute();
+// Ici nous allons recupèrer les valeur à modifier
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 $nom = $row['nom'];
 $prenom = $row['prenom'];
@@ -12,6 +13,7 @@ $email = $row['email'];
 
 //modification 
 if (isset($_POST['nom'], $_POST['prenom'], $_POST['email'])) {
+    // Ici on ecrase les valeurs à modifiées par les nouvelles valeurs   
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
     $email = $_POST['email'];
