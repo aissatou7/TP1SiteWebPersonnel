@@ -40,7 +40,7 @@ include('traitement/traitementConnexion.php');
           <!-- ici nous avons l'image du profil -->
           <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rows['photo']); ?>" class="rounded-circle border p-1 bg-secondary   " height="100" width="100" />
           <!-- Ici nous avons le matricule de la personne connectée -->
-          <h4><?php echo$_SESSION['Utlisateur_matricule'] ?></h4>
+          <h4><?php echo$_SESSION['matricule'] ?></h4>
         </button>
       </div>
 
@@ -48,7 +48,7 @@ include('traitement/traitementConnexion.php');
 
       <!-- Message de bienvenue -->
       <div class="col-7  d-flex justify-content-center align-items-center">
-      <h1 style="color: #2A7282;"> Bienvenue <?php echo$_SESSION['Utlisateur_prenom'].' '.$_SESSION['Utlisateur_nom'] ?></h1>
+      <h1 style="color: #2A7282;"> Bienvenue <?php echo$_SESSION['prenom'].' '.$_SESSION['nom'] ?></h1>
       </div>
       
 
@@ -102,7 +102,7 @@ include('traitement/traitementConnexion.php');
             $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0");
             $stmt->execute();
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-               if (($_SESSION['Administrateur_email']!=$row['email'])&& $row['email']==$emailàAfficher) {
+               if (($_SESSION['email']!=$row['email'])&& $row['email']==$emailàAfficher) {
                 $nom = $row['nom'];
               $prenom = $row['prenom'];
               $email = $row['email'];
@@ -127,7 +127,7 @@ include('traitement/traitementConnexion.php');
           }else { $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 ");
           $stmt->execute();
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-             if (($_SESSION['Administrateur_email']!=$row['email'])) {
+             if (($_SESSION['email']!=$row['email'])) {
               $nom = $row['nom'];
             $prenom = $row['prenom'];
             $email = $row['email'];

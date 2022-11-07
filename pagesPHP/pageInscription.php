@@ -1,7 +1,7 @@
 <?php
 include('connect.php');
 include('traitement/traitementInscription.php');
-include('traitement/traitementImage.php');
+
  ?>
 
 <!DOCTYPE html>
@@ -126,11 +126,6 @@ include('traitement/traitementImage.php');
                 ?>
                
 
-                <label for="userPhoto" class="custom-file-label">Photo </label><br>
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
-                    <input type="file"  name="image" id="image" value="">
-                </div>
               
                 <div class="form-group">
                     <input type="submit" name="valider" value="Envoyer" accept=".jpg, .png, .jpeg" class="btnSubmitCSS">
@@ -141,7 +136,7 @@ include('traitement/traitementImage.php');
         </div>
         <!-- card(carte) footer -->
         <div class="card-footer cardFooterCSS">
-            J'ai dèjà un compte. <a href="pageConnexion.php" class="lien" style="color:#2A7282 ;"> Me connecter?</a>
+            J'ai dèjà un compte. <a href="index.php" class="lien" style="color:#2A7282 ;"> Me connecter?</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

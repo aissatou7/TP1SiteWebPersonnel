@@ -1,5 +1,5 @@
 <?php
-include"controleSaisieInscription.php";
+include("controleSaisieInscription.php");
 // session_start();
 if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_POST['passwords'],$_POST['Cpasswords'])) {
 
@@ -9,44 +9,20 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
     $roleUser = ($_POST['roleUser']);
     $passwords = ($_POST['passwords']);
     $Cpasswords = ($_POST['Cpasswords']);
-    $photo = file_get_contents(["image"]["tmp_name"]);
-
-
-    // if ($_FILES["image"]["error"]===4) {
-    //     echo
-    //     " <script> alert('Veuillez saisir l'image')</script>";
-    // }else{
-    //     $fileName = $_FILES["image"]["name"];
-    //     $fileSize = $_FILES["image"]["size"];
-    //     $tmpName = file_get_contents(["image"]["tmp_name"]);
-        
-    //     $validImageExtension = ['jpg','jpeg', 'png'];
-    //     $imageExtension = explode('.', $fileName);
-    //     $imageExtension = strtolower(end($imageExtension));
-    //     if (!in_array($imageExtension, $validImageExtension)) {
-    //         echo
-    //     " <script> alert(L'extension est invalide')</script>";
-    //     }elseif($fileSize > 1000000){
-    //         echo
-    //     " <script> alert(La taille de l'image est trop grande')</script>";
-    //     }else {
-    //         $newImageName = uniqid();
-    //         $newImageName .= '.' . $imageExtension;
-    //         move_uploaded_file($tmpName, 'img/'. $newImageName);
-
-
-        
-    //     }}
-
         $stmt = $bdd->prepare("SELECT * FROM user WHERE email='$email' ");
         $stmt->execute();
-        $mat;
-    if($stmt->rowCount()>0){
-        $matricules = $stmt->fetchAll();
-        $matricule = $matricules[count($matricules) - 1]['matricule'];
-        $increment = (int) explode("/", $matricule)[1]+1;
-        $mat = "FDG_2022/$increment";
-    }
+     
+
+   //      $sql= "SELECT matricule from user";
+   //  $mat;
+   //  $res = $bdd->query($sql);
+   //  if($res->rowCount()>0){
+   //      $matricules = $res->fetchAll();
+   //      $matricule = $matricules[count($matricules) - 1]['matricule'];
+   //      $increment = (int) explode("/", $matricule)[]++;
+   //      $mat = "FDG_2022/$increment";
+   //  }
+
         $rowC = $stmt->fetchColumn(PDO::FETCH_ASSOC);
     
         if ($rowC > 0) {
@@ -59,7 +35,7 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
             $stmt->execute();
             // $stmtImage = $bdd->prepare("INSERT INTO image (photo,user)VALUES('$fileName','$idUser)");
             // $stmtImage->execute();
-            header('location:pageConnexion.php');
+            header('location:index.php');
         }
 
     }

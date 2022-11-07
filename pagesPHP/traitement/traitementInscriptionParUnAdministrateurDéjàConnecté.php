@@ -3,12 +3,12 @@ include"controleSaisieModification.php";
 
 if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_POST['passwords'],$_POST['Cpasswords'])) {
 
-    $nom = htmlspecialchars($_POST['nom']);
-    $prenom = htmlspecialchars($_POST['prenom']);
-    $email = htmlspecialchars($_POST['email']);
-    $roleUser = htmlspecialchars($_POST['roleUser']);
-    $passwords = htmlspecialchars($_POST['passwords']);
-    $Cpasswords = htmlspecialchars($_POST['Cpasswords']);
+    $nom = ($_POST['nom']);
+    $prenom = ($_POST['prenom']);
+    $email = ($_POST['email']);
+    $roleUser = ($_POST['roleUser']);
+    $passwords = ($_POST['passwords']);
+    $Cpasswords = ($_POST['Cpasswords']);
 
     // Ici on gérére automatiquement le matricule
    

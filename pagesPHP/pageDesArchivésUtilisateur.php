@@ -41,7 +41,7 @@ include('traitement/traitementConnexion.php');
           <!-- ici nous avons l'image du profil -->
           <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rows['photo']); ?>" class="rounded-circle border p-1 bg-secondary   " height="100" width="100" />
           <!-- Ici nous avons le matricule de la personne connectée -->
-          <h4><?php echo$_SESSION['Utilisateur_matricule'] ?></h4>
+          <h4><?php echo$_SESSION['matricule'] ?></h4>
         </button>
       </div>
 
@@ -49,7 +49,7 @@ include('traitement/traitementConnexion.php');
 
       <!-- Message de bienvenue -->
       <div class="col-7  d-flex justify-content-center align-items-center">
-      <h1 style="color: #2A7282;"> Bienvenue <?php echo$_SESSION['Utilisateur_prenom'].' '.$_SESSION['Utilisateur_nom'] ?></h1>
+      <h1 style="color: #2A7282;"> Bienvenue <?php echo$_SESSION['prenom'].' '.$_SESSION['nom'] ?></h1>
       </div>
       
 

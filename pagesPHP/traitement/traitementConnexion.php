@@ -27,25 +27,21 @@ if (isset($_POST['valider'])) {
             $erreur[] = "Une erreur c'est produit lors de votre tentative de connexion.<br> Veuillez contacter l'administrateur à l'email : yayefallsaliou@gmail.com"  ;
         }elseif (password_verify($passwordSaisie,$passwords)) {
             if ($roleUser == 'Administrateur') {
-                $_SESSION['id'] = $userId;
-                $_SESSION['Administrateur_email'] = $email;
-                $_SESSION['Administrateur_prenom'] = $prenom;
-                $_SESSION['Administrateur_matricule'] = $matricule;
-                $_SESSION['Administrateur_nom'] = $nom;
-                $_SESSION['Administrateur_password'] = $passwords;
                 header('location:pageDesActives.php');
             } elseif ($roleUser == 'Utilisateur')  {
-                $_SESSION['Utilisateur_email'] = $email;
-                $_SESSION['Utilisateur_prenom'] = $prenom;
-                $_SESSION['Utilisateur_matricule'] = $matricule;
-                $_SESSION['Utilisateur_nom'] = $nom;
-                $_SESSION['Utilisateur_password'] = $passwords;
                 header('location:pageDesActivesUtilisateur.php');
             }
+            $_SESSION['id'] = $userId;
+            $_SESSION['email'] = $email;
+            $_SESSION['prenom'] = $prenom;
+            $_SESSION['matricule'] = $matricule;
+            $_SESSION['nom'] = $nom;
+            $_SESSION['password'] = $passwords;
+            $_SESSION['roleUser'] = $roleUser;
         }elseif ($passwordSaisie=='') {
             $erreur[] = 'Veuillez Saisir le mot de passe!';
         }else {
-            $erreur[] = 'Password incorrect!';
+            $erreur[] = 'Password incorrect!';            
         }
     }else {
         $erreur[] = "Le Compte n'existe pas";

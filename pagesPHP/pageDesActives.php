@@ -6,6 +6,39 @@ if ($_SESSION['id']) {
 }
 ?>
 
+<!-- modification password -->
+
+<?php
+// recupèration des input à modifier
+$stmt = $bdd->prepare("SELECT passwords FROM user WHERE id='$idSession'");
+$stmt->execute();
+// Ici nous allons recupèrer les valeur à modifier
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+// $nom = $row['nom'];
+// $prenom = $row['prenom'];
+$passwords = $row['passwords'];
+
+
+//modification 
+if (isset($_POST['Cpassword'])) {
+    // Ici on ecrase les valeurs à modifiées par les nouvelles valeurs   
+    // $nom = $_POST['nom'];
+    // $prenom = $_POST['prenom'];
+    $passwords=password_hash($_POST["passwords"], PASSWORD_DEFAULT) ;
+    $passwords = $_POST['passwords'];
+
+    $stmt = $bdd->prepare("UPDATE user SET passwords='$passwords'WHERE id='$idSession'");
+    $stmt->execute();
+    if ($stmt) {
+        
+        header("location:pageDesArchivés.php");
+    } else {
+        die('Erreur : ' . $e->getMessage());
+    }
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -39,9 +72,9 @@ if ($_SESSION['id']) {
           $rows = $state->fetch(PDO::FETCH_ASSOC);
           ?>
           <!-- ici nous avons l'image du profil -->
-          <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rows['photo']); ?>" class="rounded-circle border p-1 bg-secondary   " height="100" width="100" />
+          <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rows['photo']); ?>" class="rounded-circle border p-1 bg-secondary" height="100" width="100" />
           <!-- Ici nous avons le matricule de la personne connectée -->
-          <h4><?php echo $_SESSION['Administrateur_matricule'] ?></h4>
+          <h4><?php echo $_SESSION['matricule'] ?></h4>
         </button>
         
         <div class="modal fade" id="modalProfil" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
@@ -50,7 +83,7 @@ if ($_SESSION['id']) {
               <!-Ici nous avons l'entête du profil image, prenom et nom-  -->
             <div class="modal-header">
               <img src="data:image/jpg;charset=utf8;base64,<?php echo base64_encode($rows['photo']); ?>" class="rounded-circle border p-1 bg-secondary   " height="100" width="100" />
-              <h5 class="ms-5"> <?php echo $_SESSION['Administrateur_prenom'] . ' ' . $_SESSION['Administrateur_nom'] ?></h5>
+              <h5 class="ms-5"> <?php echo $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -60,7 +93,7 @@ if ($_SESSION['id']) {
               </div>
               <div class="modal-footer">
                 <button class="btn btn-primary" data-bs-target="#changePhoto" data-bs-toggle="modal" data-bs-dismiss="modal">Photo</button>
-                <button class="btn btn-primary" data-bs-target="#changeMotDepasse" data-bs-toggle="modal" data-bs-dismiss="modal">Mot de passe</button>
+                <button class="btn btn-primary"><a href="changePassword.php?id=<?php echo $_SESSION['id'] ?>">Mot de passe</a></button>
               </div>
             </div>
           </div>
@@ -103,7 +136,7 @@ if ($_SESSION['id']) {
               <div class="modal-body">
                  <!-- Ce bouton permet de retourner au premier modal -->
           
-                <form action="traitement/traitementProfil.php" method="post" novalidate enctype="multipart/form-data">
+                <form action="pageDesActives.php" method="post" novalidate enctype="multipart/form-data">
                   <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
                     <label for="nom">Ancien mot de passe</label><br>
                         <div class="input-group mb-3">
@@ -118,7 +151,7 @@ if ($_SESSION['id']) {
                     <label for="nom">Confirmez votre nouveau mot de passe</label><br>
                         <div class="input-group mb-3">
                             <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
-                            <input type="password" class="form-control" value="<?php echo $nom ?>" autocomplete="off" name="Cpassword" aria-label="Username" aria-describedby="basic-addon1">
+                            <input type="text" class="form-control" autocomplete="off" name="Cpassword" aria-label="Username" aria-describedby="basic-addon1">
                         </div> 
 
                 </form>
@@ -138,7 +171,7 @@ if ($_SESSION['id']) {
 
       <!-- Message de bienvenue -->
       <div class="col-8  d-flex justify-content-center align-items-center">
-        <h1 style="color: #2A7282;"> Bienvenue <?php echo $_SESSION['Administrateur_prenom'] . ' ' . $_SESSION['Administrateur_nom'] ?></h1>
+        <h1 style="color: #2A7282;"> Bienvenue <?php echo $_SESSION['prenom'] . ' ' . $_SESSION['nom'] ?></h1>
       </div>
 
 
@@ -197,7 +230,7 @@ if ($_SESSION['id']) {
           $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0");
           $stmt->execute();
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            if (($_SESSION['Administrateur_email'] != $row['email']) && $row['email'] == $emailàAfficher) {
+            if (($_SESSION['email'] != $row['email']) && $row['email'] == $emailàAfficher) {
               $nom = $row['nom'];
               $prenom = $row['prenom'];
               $email = $row['email'];
@@ -245,7 +278,7 @@ if ($_SESSION['id']) {
           $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 ");
           $stmt->execute();
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            if (($_SESSION['Administrateur_email'] != $row['email'])) {
+            if (($_SESSION['email'] != $row['email'])) {
               $nom = $row['nom'];
               $prenom = $row['prenom'];
               $email = $row['email'];

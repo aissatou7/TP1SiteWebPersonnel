@@ -6,7 +6,7 @@ if (isset($_POST['valider'])) {
    if  (empty($_POST["prenom"]) || $_POST["prenom"]==" ") { //vérifie si le champ est vide et ne contient pas seulement d'espace
       $erreurPrenom[] = 'Veuillez saisir le prenom';
    }
-   if  (empty($_POST["role"]) || $_POST["role"]==" ") { //vérifie si le champ est vide et ne contient pas seulement d'espace
+   if  (empty($_POST["roleUSer"]) || $_POST["roleUser"]==" ") { //vérifie si le champ est vide et ne contient pas seulement d'espace
       $erreurRole[] = 'Veuillez saisir le role!';
    }
    if (empty($_POST["email"]) || empty($_POST["email"])==" " ){
@@ -28,4 +28,4 @@ if (isset($_POST['valider'])) {
       $passwordHack=password_hash($_POST["passwords"], PASSWORD_DEFAULT) ;
       
 
-}
+}?>
