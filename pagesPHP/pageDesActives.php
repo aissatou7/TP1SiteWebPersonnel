@@ -125,43 +125,7 @@ if (isset($_POST['Cpassword'])) {
             </div>
           </div>
         </div>
-        <!-- Ici nous avons le modal pour la modification du mot de passe -->
-        <div class="modal fade" id="changeMotDepasse" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-              <button class="btn btn-primary" data-bs-target="#modalProfil" data-bs-toggle="modal" data-bs-dismiss="modal" >retour</button>
-                <h5 class="modal-title " id="exampleModalToggleLabel2">Modifier ici votre mot de passe</h5>
-              </div>
-              <div class="modal-body">
-                 <!-- Ce bouton permet de retourner au premier modal -->
-          
-                <form action="pageDesActives.php" method="post" novalidate enctype="multipart/form-data">
-                  <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
-                    <label for="nom">Ancien mot de passe</label><br>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
-                            <input type="password" class="form-control" value="<?php echo $nom ?>" autocomplete="off" name="Apassword" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                    <label for="nom">Nouveau mot de passe</label><br>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
-                            <input type="password" class="form-control" value="<?php echo $nom ?>" autocomplete="off" name="Npassword" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>   
-                    <label for="nom">Confirmez votre nouveau mot de passe</label><br>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
-                            <input type="text" class="form-control" autocomplete="off" name="Cpassword" aria-label="Username" aria-describedby="basic-addon1">
-                        </div> 
-
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" name="validerMotPass" accept=".jpg, .png, .jpeg" class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Modifier</button>
-              </div>
-            </div>
-          </div>
-        </div>
+       
       </div>
 
 
@@ -225,9 +189,26 @@ if (isset($_POST['Cpassword'])) {
       <tbody>
         <?php
         if (isset($_POST['recherche']) && ($_POST['recherche'] != '')) {
+                    // récupérer le nombre d'enregistrements
+                    $count=$bdd->prepare("SELECT count(id) as cpt FROM user  WHERE etatArchivage=0 ");
+                    $count->setFetchMode(PDO::FETCH_ASSOC);
+                    $count->execute();
+                    $tcount=$count->fetchAll();
+              //pagination
+                    @$page=$_GET["page"];
+                    $nbr_elements_par_page=2;
+                    $nbr_de_pages=ceil($tcount[0]["cpt"]/$nbr_elements_par_page);
+                    $debut=($page-1)*$nbr_elements_par_page;
+              //récupérer les enregistrements eux-mêmes
+                    $stmt=$bdd->prepare("SELECT * FROM user   WHERE etatArchivage=0 ");
+                    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                    $stmt->execute();
+                   
+          
+    
           $emailàAfficher = $_POST['recherche'];
 
-          $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0");
+          $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 LIMIT $debut,$nbr_elements_par_page");
           $stmt->execute();
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if (($_SESSION['email'] != $row['email']) && $row['email'] == $emailàAfficher) {
@@ -275,9 +256,33 @@ if (isset($_POST['Cpassword'])) {
             }
           }
         } else {
-          $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 ");
-          $stmt->execute();
-          while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+       
+          // récupérer le nombre d'enregistrements
+                $count=$bdd->prepare("SELECT count(id) as cpt FROM user  WHERE etatArchivage=0 ");
+                $count->setFetchMode(PDO::FETCH_ASSOC);
+                $count->execute();
+                $tcount=$count->fetchAll();
+          //pagination
+                if (isset($_GET['page'])){
+                  @$page=$_GET["page"];
+                } else {
+                  @$page = 1;
+                }
+                $nbr_elements_par_page=5;
+                $nbr_de_pages=ceil($tcount[0]["cpt"]/$nbr_elements_par_page);
+                $debut=($page-1)*$nbr_elements_par_page;
+          //récupérer les enregistrements eux-mêmes
+                $stmt=$bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 LIMIT $debut,$nbr_elements_par_page");
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $stmt->execute();
+               
+      
+                
+     
+
+          // $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 ");
+          // $stmt->execute();
+          while ($row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
             if (($_SESSION['email'] != $row['email'])) {
               $nom = $row['nom'];
               $prenom = $row['prenom'];
@@ -333,19 +338,31 @@ if (isset($_POST['Cpassword'])) {
       </tbody>
 
     </table>
-    <!-- pagination -->
-    <!-- <nav aria-label="Page navigation example" id="pagination">
+
+
+
+<!-- Affichage des boutons de la pagination -->
+    <nav aria-label="Page navigation example" id="pagination">
       <ul class="pagination justify-content-center">
-        <li class="page-item disabled "> <a class="page-link" href="#"> Précédent </a>
         </li>
-        <li class="page-item active"> <a class="page-link" href="#">1</a></li>
-        <li class="page-item"> <a class="page-link" href="#">2</a></li>
-        <li class="page-item"> <a class="page-link" href="#">3</a></li>
-        <li class="page-item"> <a class="page-link" href="#">Suivant</a></li>
+          <?php 
+                for ($i=1; $i <=$nbr_de_pages; $i++) { 
+                  if ($page!=$i) {
+                    echo"
+                    <li class='page-item '> <a class='page-link' href='?page=$i'>$i</a></li>&nbsp;
+                    ";
+                  }else{
+                    echo"
+                    <li class='page-item '> <a class='page-link bg-primary text-light' href='?page=$i'>$i</a></li>&nbsp;
+                    ";
+                  }
+                    
+                }
+          ?>
       </ul>
 
     </nav>
-  </div> -->
+  </div>
 
 
 

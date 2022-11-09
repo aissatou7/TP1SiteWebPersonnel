@@ -9,6 +9,10 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
     $roleUser = ($_POST['roleUser']);
     $passwords = ($_POST['passwords']);
     $Cpasswords = ($_POST['Cpasswords']);
+    $image = $_FILES['image']['tmp_name']; 
+    $imgContent = addslashes(file_get_contents($image));
+    // $photo = file_get_contents($_FILES['image']['tmp_name']);
+    // var_dump($photo);die;
         $stmt = $bdd->prepare("SELECT * FROM user WHERE email='$email' ");
         $stmt->execute();
      
@@ -30,11 +34,17 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
         } elseif ($passwords != $Cpasswords) {
             $erreur[] = 'Les mots de passe saisi ne sont pas conforme';
         } else {
-            
-            $stmt = $bdd->prepare("INSERT INTO user (nom,prenom,email,matricule,roleUser,passwords,etat, dateInscrition, dateSuppression, dateArchivage, etatArchivage) VALUES('$nom','$prenom','$email','$mat','$roleUser','$passwordHack',12,'2022-10-26','2022-10-26','2022-10-26',0)");
+            // insertion dans les tables image et user
+            $stmt = $bdd->prepare("INSERT INTO user (nom,prenom,email,matricule,roleUser,passwords,etat,dateInscrition,dateSuppression,dateArchivage,etatArchivage) VALUES('$nom','$prenom','$email','mat','$roleUser','$passwordHack',0,'2022-10-26','2022-10-26','2022-10-26',0)");
             $stmt->execute();
-            // $stmtImage = $bdd->prepare("INSERT INTO image (photo,user)VALUES('$fileName','$idUser)");
-            // $stmtImage->execute();
+            $stmt2=$bdd->prepare("SELECT id FROM user");
+            $stmt2->execute();
+            $id=$stmt2->fetch();
+
+           
+                
+            $stmtImage = $bdd->prepare("INSERT INTO image (photo,user)VALUES('$image',$id)");
+            $stmtImage->execute();
             header('location:index.php');
         }
 

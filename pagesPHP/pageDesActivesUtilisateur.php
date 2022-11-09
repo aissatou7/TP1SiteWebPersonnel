@@ -157,7 +157,9 @@ include('traitement/traitementConnexion.php');
       </tbody>
        
     </table>
-    <!-- pagination -->
+
+   
+
     <!-- <nav aria-label="Page navigation example" id="pagination">
       <ul class="pagination justify-content-center">
         <li class="page-item disabled "> <a class="page-link" href="#"> Précédent </a>

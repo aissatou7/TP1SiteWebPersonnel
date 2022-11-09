@@ -125,10 +125,13 @@ include('traitement/traitementInscription.php');
                 }
                 ?>
                
-
+               <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
+                  <input type="file" name="image"  value="" accept=".jpg, .png, .jpeg" >
+                </div>
               
                 <div class="form-group">
-                    <input type="submit" name="valider" value="Envoyer" accept=".jpg, .png, .jpeg" class="btnSubmitCSS">
+                    <input type="submit" name="valider" value="Envoyer" class="btnSubmitCSS">
 
 
                 </div>
