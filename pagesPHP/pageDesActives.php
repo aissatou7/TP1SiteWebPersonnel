@@ -57,7 +57,7 @@ if (isset($_POST['Cpassword'])) {
 </head>
 
 <body>
-  <div class=" w-75 bg-light mt-5">
+  <div class=" container-fluid bg-light mt-5">
     <!-- entête contenant la photo, un message et bouton de déconnexion -->
     <div class="row ">
       <div class="col-2">
@@ -164,9 +164,8 @@ if (isset($_POST['Cpassword'])) {
 
         <!-- Ici nous avons la barre de recherche -->
         <div class="col-5  ">
-
           <form action="" method="POST" class="d-flex">
-            <input type="search" name="recherche" class="form-control" placeholder="Rechercher un membre ..." autocomplete="off" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="search" name="recherche" class="form-control" placeholder="Rechercher un membre ..." autocomplete="on" aria-label="Username" aria-describedby="basic-addon1">
             <button type="submit" class="input-group-text" id="basic-addon1" style="background-color: #2A7282;"><i class="fa-sharp fa-solid fa-key" style="color: white; size:2%"></i></button>
           </form>
 
@@ -187,29 +186,36 @@ if (isset($_POST['Cpassword'])) {
         </tr>
       </thead>
       <tbody>
+        <!-- Ici nous alons gérer la partie recherche avec la pagination -->
         <?php
-        if (isset($_POST['recherche']) && ($_POST['recherche'] != '')) {
-                    // récupérer le nombre d'enregistrements
-                    $count=$bdd->prepare("SELECT count(id) as cpt FROM user  WHERE etatArchivage=0 ");
-                    $count->setFetchMode(PDO::FETCH_ASSOC);
-                    $count->execute();
-                    $tcount=$count->fetchAll();
-              //pagination
-                    @$page=$_GET["page"];
-                    $nbr_elements_par_page=2;
-                    $nbr_de_pages=ceil($tcount[0]["cpt"]/$nbr_elements_par_page);
-                    $debut=($page-1)*$nbr_elements_par_page;
-              //récupérer les enregistrements eux-mêmes
-                    $stmt=$bdd->prepare("SELECT * FROM user   WHERE etatArchivage=0 ");
-                    $stmt->setFetchMode(PDO::FETCH_ASSOC);
-                    $stmt->execute();
+        if (isset($_POST['recherche']) && ($_POST['recherche'] != '')) { // condition de la recherche
+          //pagination          
+          // récupérer le nombre d'enregistrements 
+                $count=$bdd->prepare("SELECT count(id) as cpt FROM user  WHERE etatArchivage=0 ");
+                $count->setFetchMode(PDO::FETCH_ASSOC);
+                $count->execute();
+                $tcount=$count->fetchAll();
+          //pagination
+                if (isset($_GET['page'])){
+                  @$page=$_GET["page"];
+                } else {
+                  @$page = 1;
+                }
+                $nbr_elements_par_page=5;
+                $nbr_de_pages=ceil($tcount[0]["cpt"]/$nbr_elements_par_page);
+                $debut=($page-1)*$nbr_elements_par_page;
+          //récupérer les enregistrements eux-mêmes
+                $stmt=$bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 LIMIT $debut,$nbr_elements_par_page");
+                $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                $stmt->execute();
                    
           
-    
+              
           $emailàAfficher = $_POST['recherche'];
 
           $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 LIMIT $debut,$nbr_elements_par_page");
           $stmt->execute();
+          //Affichage de la pagination et de la recherche
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             if (($_SESSION['email'] != $row['email']) && $row['email'] == $emailàAfficher) {
               $nom = $row['nom'];
@@ -233,7 +239,7 @@ if (isset($_POST['Cpassword'])) {
             <!-- ici nou avons le Modal change role; Les fonctions 3 dernières propriétés permettent l affichage de message quand on survole le bouton --> 
                                                                                 
             <button type="button" class="btn "  data-bs-placement="bottom" data-bs-toggle=" tooltip" title="Changer le role de ce membre">
-            <a class="lien text-light" href="traitement/traitementChangeRole.php?recherche=oui?roleid=' . $id . '"><i class="fa-solid fa-pen-nib" style="color:black;"></i></a>
+            <a class="lien text-light" href="traitement/traitementChangeRole.php?roleid=' . $id . '"><i class="fa-solid fa-pen-nib" style="color:black;"></i></a>
             </button>
             
    
@@ -256,7 +262,7 @@ if (isset($_POST['Cpassword'])) {
             }
           }
         } else {
-       
+          //pagination  
           // récupérer le nombre d'enregistrements
                 $count=$bdd->prepare("SELECT count(id) as cpt FROM user  WHERE etatArchivage=0 ");
                 $count->setFetchMode(PDO::FETCH_ASSOC);
@@ -280,8 +286,7 @@ if (isset($_POST['Cpassword'])) {
                 
      
 
-          // $stmt = $bdd->prepare("SELECT * FROM user WHERE etatArchivage=0 ");
-          // $stmt->execute();
+         //Affichage de la pagination sans la recherche
           while ($row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
             if (($_SESSION['email'] != $row['email'])) {
               $nom = $row['nom'];

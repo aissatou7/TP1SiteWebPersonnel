@@ -10,7 +10,7 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
     $passwords = ($_POST['passwords']);
     $Cpasswords = ($_POST['Cpasswords']);
     $image = $_FILES['image']['tmp_name']; 
-    $imgContent = addslashes(file_get_contents($image));
+    $imgContent = file_get_contents($image);
     // $photo = file_get_contents($_FILES['image']['tmp_name']);
     // var_dump($photo);die;
         $stmt = $bdd->prepare("SELECT * FROM user WHERE email='$email' ");
@@ -37,13 +37,16 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
             // insertion dans les tables image et user
             $stmt = $bdd->prepare("INSERT INTO user (nom,prenom,email,matricule,roleUser,passwords,etat,dateInscrition,dateSuppression,dateArchivage,etatArchivage) VALUES('$nom','$prenom','$email','mat','$roleUser','$passwordHack',0,'2022-10-26','2022-10-26','2022-10-26',0)");
             $stmt->execute();
-            $stmt2=$bdd->prepare("SELECT id FROM user");
-            $stmt2->execute();
-            $id=$stmt2->fetch();
 
-           
-                
-            $stmtImage = $bdd->prepare("INSERT INTO image (photo,user)VALUES('$image',$id)");
+            $stmt->closeCursor();
+            $id=(int)$bdd->lastInsertId();
+            $stmtImage = $bdd->prepare("INSERT INTO `image` (photo,user) VALUES (?,?)");
+            
+            $stmtImage->bindParam(1,$imgContent);
+            // var_dump($imgContent);die;           
+            $stmtImage->bindParam(2,$id);
+            
+
             $stmtImage->execute();
             header('location:index.php');
         }

@@ -53,7 +53,7 @@
         </div>
         <!-- card(carte) footer -->
         <div class="card-footer cardFooterCSS">
-            Je n'ai pas de compte. <a href="inscription.php" class="lien" style="color:#2A7282 ;"> M'inscrire?</a>
+            Je n'ai pas de compte. <a href="pageInscription.php" class="lien" style="color:#2A7282 ;"> M'inscrire?</a>
         </div>
     </div>
 

@@ -81,9 +81,7 @@ if (isset($_POST['nom'], $_POST['prenom'], $_POST['email'])) {
 
                 <div class="form-group">
                     <!-- Modal  Modification-->
-                    <button type="submit" name="valider" data-bs-toggle="modal" data-bs-target="#modalChangeRole">
-                        <i class="fa-solid fa-pen-nib" style="color:black;"></i>
-                    </button>
+                    <button type="submit" name="valider" data-bs-toggle="modal" data-bs-target="#modalChangeRole" class="btnSubmitCSS"><a href="pageDesActives.php">Modifier</a></button>
 
                     <div class="modal fade" id="modalChangeRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
