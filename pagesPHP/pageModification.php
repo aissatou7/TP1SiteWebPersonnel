@@ -59,7 +59,7 @@ if (isset($_POST['nom'], $_POST['prenom'], $_POST['email'])) {
         </div>
         <!-- card(carte) body -->
         <div class="card-body cardBodyCSS">
-            <button class="btn mt-5"><a href="pageDesActives.php" class="lien">Retour </a></button>
+            <button class="btn mt-5" ><a href="pageDesActives.php" class="lien" style="color: #2A7282;">Retour </a></button>
             <form action="" method="post" novalidate>
                 <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
 
@@ -106,7 +106,7 @@ if (isset($_POST['nom'], $_POST['prenom'], $_POST['email'])) {
 
                 <div class="form-group">
                     <!-- Modal  Modification-->
-                    <button type="submit" name="valider" data-bs-toggle="modal" data-bs-target="#modalChangeRole" class="btnSubmitCSS">Modifier</a></button>
+                    <button type="submit" name="valider" data-bs-toggle="modal" data-bs-target="#modalChangeRole"style="background-color: #2A7282; color: white;" >Modifier</button>
 
                     <div class="modal fade" id="modalChangeRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

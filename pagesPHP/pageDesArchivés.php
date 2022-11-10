@@ -322,7 +322,7 @@ if (isset($_POST['Cpassword'])) {
                     ";
                   }else{
                     echo"
-                    <li class='page-item '> <a class='page-link bg-primary text-light' href='?page=$i'>$i</a></li>&nbsp;
+                    <li class='page-item '> <a class='page-link text-light' style='background-color: #2A7282;' href='?page=$i'>$i</a></li>&nbsp;
                     ";
                   }
                     

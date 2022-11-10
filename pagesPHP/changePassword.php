@@ -87,7 +87,7 @@ if (isset($_POST['Apassword'],$_POST['Npassword'],$_POST['Cpassword'])&& !empty(
                                     echo"<span style='color:red;'>$char </span>";
                                 }
                             }
-                            ?>
+                            ?><br>
                     <label for="nom">Nouveau mot de passe</label><br>
                         <div class="input-group mb-3">
                             <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
@@ -106,7 +106,7 @@ if (isset($_POST['Apassword'],$_POST['Npassword'],$_POST['Cpassword'])&& !empty(
                                     echo"<span style='color:red;'>$char </span>";
                                 }
                             }
-                            ?>
+                            ?><br>
                        <input type="submit" name="valider" value="Modifier">
 
                 </form>

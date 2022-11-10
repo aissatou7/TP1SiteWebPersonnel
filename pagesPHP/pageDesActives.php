@@ -355,11 +355,11 @@ if (isset($_POST['Cpassword'])) {
                 for ($i=1; $i <=$nbr_de_pages; $i++) { 
                   if ($page!=$i) {
                     echo"
-                    <li class='page-item '> <a class='page-link' href='?page=$i'>$i</a></li>&nbsp;
+                    <li class='page-item ' > <a class='page-link' href='?page=$i'>$i</a></li>&nbsp;
                     ";
                   }else{
                     echo"
-                    <li class='page-item '> <a class='page-link bg-primary text-light' href='?page=$i'>$i</a></li>&nbsp;
+                    <li class='page-item '> <a class='page-link text-light' style='background-color: #2A7282;' href='?page=$i'>$i</a></li>&nbsp;
                     ";
                   }
                     
