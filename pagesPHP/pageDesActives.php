@@ -156,7 +156,7 @@ if (isset($_POST['Cpassword'])) {
       <div class="row  d-flex align-items-center ">
 
         <div class="col-2 ">
-          <button class="btn"><a href="pageInscription.php" class="lien" style="color: #2A7282;">Inscription </a></button>
+          <button class="btn"><a href="inscription.php" class="lien" style="color: #2A7282;">Inscription </a></button>
         </div>
 
         <div class="col-5">

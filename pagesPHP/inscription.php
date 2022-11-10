@@ -30,7 +30,7 @@ include('traitement/traitementInscription.php');
             <h3> CONNEXION</h3>
         </div>    
 
-            <form id="form"  novalidate enctype="multipart/form-data">
+            <form id="form" action="" method="post" novalidate enctype="multipart/form-data">
                 <!--  novalidate pour la validation du format de l'email (FILTER_VAR($_POST['email'] FILTER_VALIDATE_EMAIL)) -->
                 <div class="form-control mt-3 d-flex-wrap">
                     <label >Nom</label><br>
@@ -72,7 +72,7 @@ include('traitement/traitementInscription.php');
                     <label >Mot de passe</label><br>
                     <i class="fas fa-check-circle position-absolute " ></i>
                     <i class="fas fa-exclamation-circle position-absolute"  ></i>                    
-                    <input type="text" id="passwords" class="w-100 p-2" placeholder="Entrez votre mot de passe" autocomplete="on" name="passwords" ><br>
+                    <input type="password" id="passwords" class="w-100 p-2" placeholder="Entrez votre mot de passe" autocomplete="on" name="passwords" ><br>
                     <small  >Mot de passe invalide</small>
                 </div>
 
@@ -81,15 +81,15 @@ include('traitement/traitementInscription.php');
                     <label >Confirmation mot de passe</label><br>
                     <i class="fas fa-check-circle position-absolute " ></i>
                     <i class="fas fa-exclamation-circle position-absolute"  ></i>                    
-                    <input type="text" id="Cpasswords" class="w-100 p-2" placeholder="Entrez votre mot de passe" autocomplete="on" name="Cpasswords" ><br>
+                    <input type="password" id="Cpasswords" class="w-100 p-2" placeholder="Entrez votre mot de passe" autocomplete="on" name="Cpasswords" ><br>
                     <small  >Mot de passe non conforme</small>
                 </div>
 
                <div class="form-control  mt-3" >
                   <input type="file" name="image"  value="" accept=".jpg, .png, .jpeg" >
                 </div>
-              
-                <button type="submit" name="valider" class="mt-4 p-1 w-100" style="background-color:#2A7282 ; color:white;"> Envoyer</button>
+
+                <button type="submit" name="valider" class="mt-4 p-1 w-100" style="background-color:#2A7282 ; color:white;" onclick="checkInputs(event)"> Envoyer</button>
 
             </form>
         <!-- card(carte) footer -->
@@ -105,13 +105,13 @@ include('traitement/traitementInscription.php');
             const passwords=document.getElementById('passwords');
             const Cpasswords=document.getElementById('Cpasswords');
             
-            form.addEventListener('submit',(e) => {
-                e.preventDefault();
-                checkInputs();
-            });
+            // form.addEventListener('submit',(e) => {
+            //     e.preventDefault();
+            //     checkInputs();
+            // });
             
 
-     function checkInputs(){
+     function checkInputs(e){
         // recupèration des valeurs des inputs
         const nomValue=nom.value.trim();    //la fonction trim()permet d'éliminer les espace avent la saisie de caractères
         const prenomValue=prenom.value.trim();
@@ -126,6 +126,7 @@ include('traitement/traitementInscription.php');
             //recherche erreur
             //Ajout de la classe error
             setErrorFor(nom,'Veuillez renseigner le nom !');
+            e.preventDefault();
         }else{
             //ajout de la class success  
             setSuccessFor(nom);
@@ -135,6 +136,7 @@ include('traitement/traitementInscription.php');
             //recherche erreur
             //Ajout de la classe error
             setErrorFor(prenom,'Veuillez renseigner le prenom !');
+            e.preventDefault();
         }else{
             //ajout de la class success  
             setSuccessFor(prenom);
@@ -144,6 +146,9 @@ include('traitement/traitementInscription.php');
             //recherche erreur
             //Ajout de la classe error
             setErrorFor(email,'Veuillez renseigner le email !');
+            e.preventDefault();
+        }else if(!isEmail(emailValue)){
+            setErrorFor(email,'format email non valide !');
         }else{
             //ajout de la class success  
             setSuccessFor(email);
@@ -153,6 +158,7 @@ include('traitement/traitementInscription.php');
             //recherche erreur
             //Ajout de la classe error
             setErrorFor(role,'Veuillez renseigner le role !');
+            e.preventDefault();
         }else{
             //ajout de la class success  
             setSuccessFor(role);
@@ -162,15 +168,15 @@ include('traitement/traitementInscription.php');
             //recherche erreur
             //Ajout de la classe error
             setErrorFor(passwords,'Veuillez renseigner le mot de passe !');
+            e.preventDefault();
         }else{
             //ajout de la class success  
             setSuccessFor(passwords);
         }
-        //Statut du mot de passe
-        if (CpasswordsValue === '') {   
-            //recherche erreur
-            //Ajout de la classe error
-            setErrorFor(Cpasswords,'Veuillez renseigner le mot de passe !');
+        //Statut confirmation du mot de passe
+         if(passwordsValue!=CpasswordsValue){
+            setErrorFor(Cpasswords,'Les deux mots de passe saisie ne sont pas conforme');
+            e.preventDefault();
         }else{
             //ajout de la class success  
             setSuccessFor(Cpasswords);
@@ -192,10 +198,13 @@ include('traitement/traitementInscription.php');
         //ajout de la classe succes
         formControl.className = 'form-control success';
     } 
-
-        
-        
-        
+    function isEmail(email){
+          
+          var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return re.test(email);
+    }
+     
+     
     </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
