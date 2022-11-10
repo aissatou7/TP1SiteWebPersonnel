@@ -17,15 +17,16 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
         $stmt->execute();
      
 
-   //      $sql= "SELECT matricule from user";
-   //  $mat;
-   //  $res = $bdd->query($sql);
-   //  if($res->rowCount()>0){
-   //      $matricules = $res->fetchAll();
-   //      $matricule = $matricules[count($matricules) - 1]['matricule'];
-   //      $increment = (int) explode("/", $matricule)[]++;
-   //      $mat = "FDG_2022/$increment";
-   //  }
+        $sql= "SELECT matricule from user";
+    $mat;
+    $res = $bdd->query($sql);
+    if($res->rowCount()>0){
+        $matricules = $res->fetchAll();
+        $matricule = $matricules[count($matricules) - 1]['matricule'];
+        $incr = (int) explode("/", $matricule)[1]+1;
+        $increment=$incr+1;
+        $mat = "MAF000/$increment";
+    }
 
         $rowC = $stmt->fetchColumn(PDO::FETCH_ASSOC);
     
@@ -35,7 +36,7 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
             $erreur[] = 'Les mots de passe saisi ne sont pas conforme';
         } else {
             // insertion dans les tables image et user
-            $stmt = $bdd->prepare("INSERT INTO user (nom,prenom,email,matricule,roleUser,passwords,etat,dateInscrition,dateSuppression,dateArchivage,etatArchivage) VALUES('$nom','$prenom','$email','mat','$roleUser','$passwordHack',0,'2022-10-26','2022-10-26','2022-10-26',0)");
+            $stmt = $bdd->prepare("INSERT INTO user (nom,prenom,email,matricule,roleUser,passwords,etat,dateArchivage,etatArchivage) VALUES('$nom','$prenom','$email','$mat','$roleUser','$passwordHack',0,'2022-10-26',0)");
             $stmt->execute();
 
             $stmt->closeCursor(); //permet de fermer la requête $stmt avant de passer

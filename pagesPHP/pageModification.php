@@ -3,6 +3,7 @@ include 'connect.php';
 include 'traitement/controleSaisieModification.php';
 // recupèration des input à modifier
 $id = $_GET['updateid'];
+$dateModification=date('y-m-d h:i:s');
 $stmt = $bdd->prepare("SELECT nom,prenom,email FROM user WHERE id='$id'");
 $stmt->execute();
 // Ici nous allons recupèrer les valeur à modifier
@@ -19,7 +20,7 @@ if (isset($_POST['nom'], $_POST['prenom'], $_POST['email'])) {
     $prenom = $_POST['prenom'];
     $email = $_POST['email'];
 
-    $stmt = $bdd->prepare("UPDATE user SET nom='$nom',prenom='$prenom',email='$email'WHERE id='$id'");
+    $stmt = $bdd->prepare("UPDATE user SET nom='$nom',prenom='$prenom',email='$email',dateModification='$dateModification' WHERE id='$id'");
     $stmt->execute();
     if ($stmt) {
         
