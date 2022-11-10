@@ -38,14 +38,11 @@ if (isset($_POST['nom'],$_POST['prenom'],$_POST['email'],$_POST['roleUser'],$_PO
             $stmt = $bdd->prepare("INSERT INTO user (nom,prenom,email,matricule,roleUser,passwords,etat,dateInscrition,dateSuppression,dateArchivage,etatArchivage) VALUES('$nom','$prenom','$email','mat','$roleUser','$passwordHack',0,'2022-10-26','2022-10-26','2022-10-26',0)");
             $stmt->execute();
 
-            $stmt->closeCursor();
+            $stmt->closeCursor(); //permet de fermer la requête $stmt avant de passer
             $id=(int)$bdd->lastInsertId();
-            $stmtImage = $bdd->prepare("INSERT INTO `image` (photo,user) VALUES (?,?)");
-            
+            $stmtImage = $bdd->prepare("INSERT INTO `image` (photo,user) VALUES (?,?)"); //cette methode est la meilleur à adopter 
             $stmtImage->bindParam(1,$imgContent);
-            // var_dump($imgContent);die;           
             $stmtImage->bindParam(2,$id);
-            
 
             $stmtImage->execute();
             header('location:index.php');

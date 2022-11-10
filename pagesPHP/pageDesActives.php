@@ -60,6 +60,7 @@ if (isset($_POST['Cpassword'])) {
   <div class=" container-fluid bg-light mt-5">
     <!-- entête contenant la photo, un message et bouton de déconnexion -->
     <div class="row ">
+      <h2 class="d-flex justify-content-center p-2 " style="background-color:#2A7282; color:white;">Liste des actives</h2>
       <div class="col-2">
 
         <!-- entête contenant la photo / Modal change role  -->
@@ -93,7 +94,7 @@ if (isset($_POST['Cpassword'])) {
               </div>
               <div class="modal-footer">
                 <button class="btn btn-primary" data-bs-target="#changePhoto" data-bs-toggle="modal" data-bs-dismiss="modal">Photo</button>
-                <button class="btn btn-primary"><a href="changePassword.php?id=<?php echo $_SESSION['id'] ?>">Mot de passe</a></button>
+                <button class="btn btn-primary"><a class="lien text-light"  href="changePassword.php?id=<?php echo $_SESSION['id'] ?>">Mot de passe</a></button>
               </div>
             </div>
           </div>
@@ -114,11 +115,11 @@ if (isset($_POST['Cpassword'])) {
                       <label for="userPhoto" class="custom-file-label">Photo </label><br>
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="fa-sharp fa-solid fa-key"></i></span>
-                        <input type="file" name="image" id="image" value="">
+                        <input type="file" name="image" id="image" value="" accept=".jpg, .png, .jpeg">
                       </div>
                       
                       <div class="modal-footer">
-                        <button type="submit" name="valider" accept=".jpg, .png, .jpeg" class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Modifier</button>
+                        <button type="submit" name="valider"  class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Modifier</button>
                       </div>
                     </form>
                 </div>

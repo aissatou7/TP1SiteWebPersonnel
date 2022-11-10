@@ -1,5 +1,6 @@
 <?php
 include 'connect.php';
+include 'traitement/controleSaisieModification.php';
 // recupèration des input à modifier
 $id = $_GET['updateid'];
 $stmt = $bdd->prepare("SELECT nom,prenom,email FROM user WHERE id='$id'");
@@ -22,7 +23,7 @@ if (isset($_POST['nom'], $_POST['prenom'], $_POST['email'])) {
     $stmt->execute();
     if ($stmt) {
         
-        // header("location:pageDesActives.php");
+        header("location:pageDesActives.php");
     } else {
         die('Erreur : ' . $e->getMessage());
     }
@@ -67,21 +68,45 @@ if (isset($_POST['nom'], $_POST['prenom'], $_POST['email'])) {
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
                     <input type="text" class="form-control" value="<?php echo $nom ?>" autocomplete="off" name="nom" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
+                <!-- Affichage des messages d'erreurs avec controle PHP-->
+                <?php
+                if (isset($erreurNom)) {
+                    foreach ($erreurNom as $erreurNom) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurNom . '</div>';
+                    }
+                }
+                ?>
 
                 <label for="prenom">Prenom</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
                     <input type="text" class="form-control" value="<?php echo $prenom ?>" autocomplete="off" name="prenom" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
+                <!-- Affichage des messages d'erreurs avec controle PHP-->
+                <?php
+                if (isset($erreurPrenom)) {
+                    foreach ($erreurPrenom as $erreurPrenom) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurPrenom . '</div>';
+                    }
+                }
+                ?>
                 <label for="email">Email</label><br>
                 <div class="input-group mb-3">
                     <span class="input-group-text " id="basic-addon1"><i class="fa-solid fa-user"></i></span>
                     <input type="email" class="form-control" value="<?php echo $email ?>" autocomplete="off" name="email" aria-label="Username" aria-describedby="basic-addon1">
                 </div>
+                <!-- Affichage des messages d'erreurs avec controle PHP-->
+                <?php
+                if (isset($erreurEmail)) {
+                    foreach ($erreurEmail as $erreurEmail) {
+                        echo '<div class="erreurMsg" style="color:red;"> ' . $erreurEmail . '</div>';
+                    }
+                }
+                ?>
 
                 <div class="form-group">
                     <!-- Modal  Modification-->
-                    <button type="submit" name="valider" data-bs-toggle="modal" data-bs-target="#modalChangeRole" class="btnSubmitCSS"><a href="pageDesActives.php">Modifier</a></button>
+                    <button type="submit" name="valider" data-bs-toggle="modal" data-bs-target="#modalChangeRole" class="btnSubmitCSS">Modifier</a></button>
 
                     <div class="modal fade" id="modalChangeRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

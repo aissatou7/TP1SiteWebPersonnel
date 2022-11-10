@@ -61,7 +61,7 @@ include('traitement/traitementInscription.php');
                     <i class="fas fa-check-circle position-absolute " ></i>
                     <i class="fas fa-exclamation-circle position-absolute"  ></i>                    
                     <select select id="role" class="form-select" name="roleUser" aria-label="Default select example">
-                        <option selected>Entrez votre role</option>
+                        <option selected placeholder="Choisir votre role"> </option>
                         <option value="Administrateur">Administrateur</option>
                         <option value="Utilisateur">Utilisateur</option>
                     </select>                 
@@ -121,21 +121,59 @@ include('traitement/traitementInscription.php');
         const CpasswordsValue=Cpasswords.value.trim();
         
         //ici nous alons gérer quand afficher les messages d'erreur ou de succes
-        if (nomValue === '') {
+        //Statut du nom
+        if (nomValue === '') {  
             //recherche erreur
             //Ajout de la classe error
             setErrorFor(nom,'Veuillez renseigner le nom !');
         }else{
             //ajout de la class success  
-            // setSuccessFor(nom);
+            setSuccessFor(nom);
         }
-        if (prenomValue === '') {
+        //Statut du prenom
+        if (prenomValue === '') {   
             //recherche erreur
             //Ajout de la classe error
             setErrorFor(prenom,'Veuillez renseigner le prenom !');
         }else{
             //ajout de la class success  
-            // setSuccessFor(prenom);
+            setSuccessFor(prenom);
+        }
+        //Statut du email
+        if (emailValue === '') {   
+            //recherche erreur
+            //Ajout de la classe error
+            setErrorFor(email,'Veuillez renseigner le email !');
+        }else{
+            //ajout de la class success  
+            setSuccessFor(email);
+        }
+        //Statut du role
+        if (roleValue === '') {   
+            //recherche erreur
+            //Ajout de la classe error
+            setErrorFor(role,'Veuillez renseigner le role !');
+        }else{
+            //ajout de la class success  
+            setSuccessFor(role);
+        }
+        //Statut du mot de passe
+        if (passwordsValue === '') {   
+            //recherche erreur
+            //Ajout de la classe error
+            setErrorFor(passwords,'Veuillez renseigner le mot de passe !');
+        }else{
+            //ajout de la class success  
+            setSuccessFor(passwords);
+        }
+        //Statut du mot de passe
+        if (CpasswordsValue === '') {   
+            //recherche erreur
+            //Ajout de la classe error
+            setErrorFor(Cpasswords,'Veuillez renseigner le mot de passe !');
+        }else{
+            //ajout de la class success  
+            setSuccessFor(Cpasswords);
         }
     }
     //définition de la fonction setErrorFor()
@@ -147,6 +185,13 @@ include('traitement/traitementInscription.php');
             //ajout de la classe error
             formControl.className = 'form-control error';
         }
+      
+    function setSuccessFor(input){
+        const formControl = input.parentElement;
+    
+        //ajout de la classe succes
+        formControl.className = 'form-control success';
+    } 
 
         
         
